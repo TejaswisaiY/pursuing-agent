@@ -1,16 +1,16 @@
 import "dotenv/config";
 import { loadState, saveState } from "./state.js";
 import { seedConfig } from "./seed.js";
+import { processInbound } from "./telegram.js";
 
 async function poll() {
   const now = new Date().toISOString();
 
   let state = loadState();
 
-  // Ensure config is always populated before any logic runs
   state = seedConfig(state);
+  state = await processInbound(state);
 
-  // TODO: fetch Telegram updates
   // TODO: evaluate today's check-in state
   // TODO: send scheduled messages / escalations
   // TODO: commit state back via GitHub API or git CLI in Actions
